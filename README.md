@@ -1,51 +1,29 @@
-#  README
-
-> This is a project to support AP Computer Science Principles (CSP) as well as a UC articulated Data Structures course. It was crafted iteratively starting in 2020 to the present time.  The primary purposes are ...
-
-- Used as starter code for student projects for AP CSP and Data Structures curriculum.
-- Used to teach key principles in learning the Python Flask programming environment.
-- Used as a backend server to service API's in a frontend-to-backend pipeline. Review the `api` folder in the project for endpoints.
-- Contains a minimal frontend, mostly to support Administrative functionality in the `templates` folder.
-- Contains SQL database code in the `model` folder to introduce concepts of persistent data and storage.
-- Contains capabilities for deployment and has been used with AWS, Ubuntu, Docker, docker-compose, and Nginx to deploy a WSGI server.
-- Contains APIs to support user authentication and cookies, a great deal of which was contributed by Aiden Wu a former student in CSP.  
-
-## Flask Portfolio Starter
+# Flask Portfolio Starter
 
 Use this project to create a Flask Server.
 
-Runtime link: <https://flask.nighthawkcodingsociety.com/>
-GitHub link: https://github.com/nighthawkcoders/flask_portfolio
+GitHub link: <https://github.com/nighthawkcoders/cpt>
 
-## The conventional way to get started
+## Getting Started
 
 > Quick steps that can be used with MacOS, WSL Ubuntu, or Ubuntu; this uses Python 3.9 or later as a prerequisite.
 
-- Open a Terminal, clone a project and cd to the project area
-
-```bash
-mkdir ~/vscode; cd ~/vscode
-
-git clone https://github.com/nighthawkcoders/flask_portfolio.git
-
-cd flask_portfolio
-```
-
-- Install python dependencies for Flask, etc.
+- Open a Terminal, clone the project and then cd into the project area
+Install Python and then install Python dependencies for Flask, etc.
 
 ```bash
 pip install -r requirements.txt
 ```
 
-- Run from Terminal without VSCode
+- Run from Terminal without VSCode, run each time you change schema
 
-  - Setup database and init data
+  - Setup database with data
   
   ```bash
     ./migrate.sh
-    ```
+  ```
 
-  - Run Python server from the command line without VSCode
+Run the Python server from the command line
 
     ```bash
     python main.py
@@ -58,6 +36,7 @@ pip install -r requirements.txt
   - From Terminal run VSCode
 
     ```bash
+    cd ~/vscode/cpt
     code .
     ```
 
@@ -70,15 +49,18 @@ pip install -r requirements.txt
 
 ## Idea
 
-### Visual thoughts
+> The purpose of project is to serve APIs.  It is the backend piece of a Full-Stack project.  Review `api` folder in project for endpoints.
 
-> The Starter code should be fun and practical.
+### Hacks
+>
+> Change the starter code to be your own.
 
-- Organize with Bootstrap menu
+- Change the Bootstrap menu, find places to change Nighthawk information
+- Change the Home Page, and dress it up with ideas from your project.
 - Add some color and fun through VANTA Visuals (birds, halo, solar, net)
-- Show some practical and fun links (HREFs) like Twitter, Git, Youtube
-- Build a Sample Page (Table)
-- Show the project-specific links (HREFs) per page
+- Show some practical and fun links (hrefs) like Twitter, Git, Youtube
+- Build a Sample Page (The table is provided as a guide to Jinja)
+- Change the project-specific links page
 
 ### Files and Directories in this Project
 
@@ -92,15 +74,31 @@ main.py: This Python source file is used to run the project. Running this file s
 
 Dockerfile and docker-compose.yml: These files are used to run and test the project in a Docker container. They allow you to simulate the project’s deployment on a server, such as an AWS EC2 instance. Running these files helps ensure that your tools and dependencies work correctly on different machines.
 
-instances: This directory is the standard location for storing data files that you want to remain on the server. For example, SQLite database files can be stored in this directory. Files stored in this location will persist after web application restart, everyting outside of instances will be recreated at restart.
+instances: This directory is the standard location for storing data files that you want to remain on the server. For example, SQLite database files can be stored in this directory. Files stored in this location will persist after a web application restart, everything outside of instances will be recreated at restart.
 
 static: This directory is the standard location for files that you want to be cached by the web server. It is typically used for image files (JPEG, PNG, etc.) or JavaScript files that remain constant during the execution of the web server.
 
 api: This directory contains code that receives and responds to requests from external servers. It serves as the interface between the external world and the logic and code in the rest of the project.
 
+api/users:  These API's are guarded by @token_required, test these using Postman, first you must authenticate <http://127.0.0.1:8069/api/users/authenticate> using raw body JSON {"uid": "toby", "password": "123toby"} which will obtain a Cookie. Then you can use the API <http://127.0.0.1:8069/api/users>
+
+api/players: These API's are unguarded. The GET method can be run in the browser <http://127.0.0.1:8069/api/players/>.   PUT, POST, DELETE methods are supported and can be tested in POSTMAN.
+
 model: This directory contains files that implement the backend functionality for many of the files in the api directory. For example, there may be files in the model directory that directly interact with the database.
 
 templates: This directory contains files and subdirectories used to support the home and error pages of the website.
+
+templates/layouts/base.html:  This is the Jinja2 template that defines the the head and body requirements for all pages within the site.  This includes navbar.html which provides the menu for the site.
+
+templates/index.html: This is the home page for the site.  It extends base.html and shows the usage of bootstrap cards.
+
+templates/table.html: This is a submenu page and it extends base.html and shows the usage of jQuery data table.
+
+projects: This directory contains files for setting up routes to static HTML pages.
+
+projects/project.py:  This Python file sets up routes to render template files.
+
+projects/templates/bp_projects:  This shows additional Jinja2 formatting such as nested extends and url_for.
 
 .gitignore: This file specifies elements to be excluded from version control. Files are excluded when they are derived and not considered part of the project’s original source. In the VSCode Explorer, you may notice some files appearing dimmed, indicating that they are intentionally excluded from version control based on the rules defined in .gitignore.
 
@@ -108,27 +106,12 @@ templates: This directory contains files and subdirectories used to support the 
 
 #### July 2023
 
-> Updates for 2023 to 2024 school year.
-
 - Update README with File Descriptions (anatomy)
-- Add JWT and add security features using a SQLite user database
+- Add JWT and add security features to the data
 - Add migrate.sh to support sqlite schema and data upgrade
 
-#### January 2023
+#### January 2024
 
-> This project focuses on being a Python backend server.  Intentions are to only have simple UIs an perhaps some Administrative UIs.
-
-#### September 2021
-
-> Basic UI elements were implemented showing server side Flask with Jinja 2 capabilities.
-
-- The Project entry point is main.py, this enables the Flask Web App and provides the capability to render templates (HTML files)
-- The main.py is the  Web Server Gateway Interface, essentially it contains an HTTP route and HTML file relationship.  The Python code constructs WSGI relationships for index, kangaroos, walruses, and hawkers.
-- The project structure contains many directories and files.  The template directory (containing HTML files) and static directory (containing JS files) are common standards for HTML coding.  Static files can be pictures and videos, in this project they are mostly javascript backgrounds.
-- WSGI templates: index.html, kangaroos.html, ... are aligned with routes in main.py.
-- Other templates support WSGI templates.  The base.html template contains common Head, Style, Body, and Script definitions.  WSGI templates often "include" or "extend" these templates.  This is a way to reuse code.
-- The VANTA javascript statics (backgrounds) are shown and defaulted in base.html (birds) but are block-replaced as needed in other templates (solar, net, ...)
-- The Bootstrap Navbar code is in navbar.html. The base.html code includes navbar.html.  The WSGI html files extend base.html files.  This is a process of management and correlation to optimize code management.  For instance, if the menu changes discovery of navbar.html is easy, one change reflects on all WSGI html files.
-- Jinja2 variables usage is to isolate data and allow redefinitions of attributes in templates.  Observe "{% set variable = %}" syntax for definition and "{{ variable }}" for reference.
-- The base.html uses a combination of Bootstrap grid styling and custom CSS styling.  Grid styling in observation with the "<Col-3>" markers.  A Bootstrap Grid has a width of 12, thus four "Col-3" markers could fit on a Grid row.
-- A key purpose of this project is to embed links to other content.  The "href=" definition embeds hyperlinks into the rendered HTML.  The base.html file shows usage of "href={{github}}", the "{{github}}" is a Jinja2 variable.  Jinja2 variables are pre-processed by Python, a variable swap with value, before being sent to the browser.
+- Make this project a template for a Python backend server.
+- Add README entries for migrate.sh usage, database setup and migration
+- Add README entries for api/users and api/players
