@@ -8,7 +8,6 @@ from __init__ import app, db, login_manager  # Key Flask objects
 
 # API endpoints
 from api.covid import covid_api 
-from api.joke import joke_api 
 from api.user import user_api 
 from api.player import player_api
 from api.titanic import titanic_api
@@ -25,7 +24,6 @@ from views.projects.projects import project_views
 db.init_app(app)
 
 # register URIs for api endpoints
-app.register_blueprint(joke_api) 
 app.register_blueprint(covid_api) 
 app.register_blueprint(user_api) 
 app.register_blueprint(player_api)
