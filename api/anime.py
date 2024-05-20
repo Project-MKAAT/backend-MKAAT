@@ -3,7 +3,7 @@ from flask_restful import Api, Resource
 from datetime import datetime
 import jwt
 from auth_middleware import token_required
-from model.animes import Message  # Import the Message class
+from model.animes import Anime  # Import the Message class
 from __init__ import app, db
 
 anime_api = Blueprint("anime_api", __name__, url_prefix="/api/anime/")
@@ -13,6 +13,17 @@ api = Api(anime_api)
 
 class AnimeAPI:
     class _CRUD(Resource):
+        def post(self, Anime):
+            body = request.get_json()
+
+            anime = Anime(obj=Anime)
+
+            try:
+                animes = anime.create()
+                return jsonify(animes.read()), 201
+            except Exception as e:
+                return {"message": f"Failed to create data: {str(e)}"}, 500
+
         @token_required
         def post(self, current_user, Message):  # Create Method
             body = request.get_json()
@@ -23,7 +34,7 @@ class AnimeAPI:
                 return {"message": "Message content is missing"}, 400
 
             # Create Message object
-            message = Message(uid=current_user.uid, message=message_content)
+            message = Message(uid=current_user.title, message=message_content)
 
             # Add message to database
             try:
@@ -93,7 +104,7 @@ class AnimeAPI:
                 return {"message": f"Failed to delete message: {str(e)}"}, 500
 
 
-api.add_resource(MessageAPI._CRUD, "/")
-api.add_resource(MessageAPI._Send, "/send")
-api.add_resource(MessageAPI._Delete, "/delete")
-api.add_resource(MessageAPI._Likes, "/like")
+api.add_resource(AnimeAPI._CRUD, "/")
+api.add_resource(AnimeAPI._Send, "/send")
+api.add_resource(AnimeAPI._Delete, "/delete")
+api.add_resource(AnimeAPI._Likes, "/like")
