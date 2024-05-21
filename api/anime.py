@@ -13,16 +13,20 @@ api = Api(anime_api)
 
 class AnimeAPI:
     class _CRUD(Resource):
-        def post(self, Anime):
+        @token_required
+        def post(self, current_user, Anime):
             body = request.get_json()
+            
+            rating = int(body.get('rating'))
+            title = body.get('title')
 
-            anime = Anime(obj=Anime)
-
+            if not body and not title:
+                return {"message": "Content is missing"}, 400
+            
+            userRating = Anime(uid=current_user.title, _rating=rating)
+            
             try:
-                animes = anime.create()
-                return jsonify(animes.read()), 201
-            except Exception as e:
-                return {"message": f"Failed to create data: {str(e)}"}, 500
+                newRating = userRating.create()
 
         @token_required
         def post(self, current_user, Message):  # Create Method
