@@ -12,7 +12,6 @@ class Anime(db.Model):
     __tablename__ = "databases"  # table name is plural, class name is singular
 
     # Define the Message schema with "vars" from object
-    id = db.Column(db.Integer, primary_key=True)
     _title = db.Column(db.String(255), unique=False, nullable=False)
     _release = db.Column(db.DateTime, nullable=False, default=date.today())
     _genre = db.Column(db.String(255), unique=False, nullable=False)
