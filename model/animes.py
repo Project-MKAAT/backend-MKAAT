@@ -6,12 +6,14 @@ import json
 from __init__ import app, db
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime
 
 
 class Anime(db.Model):
     __tablename__ = "databases"  # table name is plural, class name is singular
 
     # Define the Message schema with "vars" from object
+    _id = db.Column(db.Integer, primary_key=True)
     _title = db.Column(db.String(255), unique=False, nullable=False)
     _release = db.Column(db.DateTime, nullable=False, default=date.today())
     _genre = db.Column(db.String(255), unique=False, nullable=False)
@@ -119,13 +121,7 @@ def initMessages():
         db.create_all()
 
         """Tester data for table"""
-        a1 = Anime(
-            title="Tales of Aryan",
-            release="05-20-2024",
-            genre="Documentary",
-            rating="10.0",
-            userRating="10.0",
-        )
+        a1 = Anime(title="Tales of Aryan", release=datetime.strptime("5-20-2024", "%m-%d-%Y"), genre="Documentary", rating=10.0, userRating=10.0)
         animes = [a1]
 
         """Add message data to the table"""

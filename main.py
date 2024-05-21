@@ -25,6 +25,7 @@ from model.users import initUsers, initVideos
 
 # from model.players import initPlayers
 from model.inflation import initInflation
+from model.animes import initMessages
 
 # setup App pages
 from projects.projects import (
@@ -87,6 +88,7 @@ def generate_data():
     initVideos()
     initUsers()
     initInflation()
+    initMessages()
 
 # Register the custom command group with the Flask application
 app.cli.add_command(custom_cli)
