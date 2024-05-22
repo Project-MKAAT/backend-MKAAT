@@ -10,6 +10,28 @@ anime_api = Blueprint("anime_api", __name__, url_prefix="/api/anime/")
 
 api = Api(anime_api)
 
+def partition(arr, criteria, low, high):
+    pivot = arr[high]
+    i = low - 1
+
+    for j in range(low, high):
+        if arr[j][criteria] <= pivot[criteria]:
+            i = i + 1
+            (arr[i][criteria], arr[j][criteria]) = (arr[j][criteria], arr[i][criteria])
+
+    (arr[i + 1][criteria], arr[high][criteria]) = (arr[high][criteria], arr[i + 1][criteria])
+    return i + 1
+
+def quickSort(arr, criteria, isReversed, low, high):
+    if low < high:
+        pi = partition(arr, low, high)
+        quickSort(arr, low, pi - 1)
+        quickSort(arr, pi + 1, high)
+
+    if isReversed:
+        arr.reverse()
+
+    return arr
 
 class AnimeAPI:
     class _CRUD(Resource):
@@ -35,13 +57,29 @@ class AnimeAPI:
 
         @token_required
         def get(self, _):  # Read Method
-            messages = Message.query.all()
+            messages = Anime.query.all()
             json_ready = [message.read() for message in messages]
             return jsonify(json_ready)
 
         def put(self, old_message, new_message, likes):
-            Message.update(old_message, new_message, likes)
+            Anime.update(old_message, new_message, likes)
 
+    class _GetSorted(Resource):
+        @token_required
+        def post(self, current_user):
+            body = request.get_json() # get request
+
+            # get critera
+            criteria = body.get('criteria')
+            isReversed = eval(body.get('isReversed'))
+
+            messages = Anime.query.all()
+            json_ready = [message.read() for message in messages]
+            
+            # sort by critera
+            json_ready = quickSort(json_ready, criteria, isReversed)
+            return jsonify(json_ready)
+    
     class _Send(Resource):
         def post(self):
             token = request.cookies.get("jwt")
@@ -52,10 +90,10 @@ class AnimeAPI:
             ]  # current user
             body = request.get_json()
             # Fetch data from the form
-            message = body.get("message")
-            likes = body.get("likes")
+            rating = int(body.get('rating'))
+            title = body.get('title')
             if uid is not None:
-                new_message = Message(uid=uid, message=message, likes=likes)
+                new_message = Anime(uid=uid, rating=rating, title=title)
             message = new_message.create()
             if message:
                 return message.read()
@@ -67,7 +105,7 @@ class AnimeAPI:
         def put(self):
             body = request.get_json()
             message = body.get("message")
-            message = Message.query.filter_by(_message=message).first()
+            message = Anime.query.filter_by(_message=message).first()
             message.likes += 1
 
     class _Delete(Resource):
@@ -98,3 +136,4 @@ api.add_resource(AnimeAPI._CRUD, "/")
 api.add_resource(AnimeAPI._Send, "/send")
 api.add_resource(AnimeAPI._Delete, "/delete")
 api.add_resource(AnimeAPI._Likes, "/like")
+api.add_resource(AnimeAPI._GetSorted, "/getsorted")

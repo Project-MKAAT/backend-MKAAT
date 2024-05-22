@@ -17,6 +17,7 @@ from __init__ import app, db, cors  # Definitions initialization
 from api.user import user_api  # Blueprint import api definition
 from api.video import video_api
 from api.comment import message_api
+from api.anime import anime_api
 
 # from api.player import player_api
 # database migrations
@@ -42,6 +43,7 @@ app.register_blueprint(video_api)
 app.register_blueprint(message_api)
 # app.register_blueprint(player_api)
 app.register_blueprint(inflation_api)
+app.register_blueprint(anime_api)
 app.register_blueprint(app_projects) # register app pages
 
 

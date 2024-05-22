@@ -122,7 +122,10 @@ def initMessages():
 
         """Tester data for table"""
         a1 = Anime(title="Tales of Aryan", release=datetime.strptime("5-20-2024", "%m-%d-%Y"), genre="Documentary", rating=10.0, userRating=10.0)
-        animes = [a1]
+        a2 = Anime(title="Jojo's Bizare Adventure", release=datetime.strptime("9-13-2002", "%m-%d-%Y"), genre="Action", rating=6.9, userRating=8.8)
+        a3 = Anime(title="Naruto", release=datetime.strptime("8-17-2008", "%m-%d-%Y"), genre="Action", rating=7.2, userRating=3.4)
+
+        animes = [a1, a2, a3]
 
         """Add message data to the table"""
         for anime in animes:
@@ -132,3 +135,7 @@ def initMessages():
                 """fails with bad or duplicate data"""
                 db.session.remove()
                 print(f"Records exist, duplicate message, or error: {anime.title}")
+
+if __name__ == '__main__':
+    initMessages()
+
