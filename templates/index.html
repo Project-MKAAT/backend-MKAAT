@@ -7,9 +7,11 @@
     <title>Login</title>
     <style>
         body {
-            background: linear-gradient(45deg, #000000, #2c2c2e);
-            height: 100vh;
-            font-family: 'Montserrat', sans-serif;
+            /* background: black; */
+            background: black;
+            color: white;
+            font-family: -apple-system, system-ui, BlinkMacSystemFont;
+            font-weight: 600;
         }
 
         .container {
@@ -24,8 +26,6 @@
             padding: 3em;
             height: auto;
             border-radius: 20px;
-            border-left: 1px solid rgba(58, 58, 60, 0.3);
-            border-top: 1px solid rgba(58, 58, 60, 0.3);
             backdrop-filter: blur(10px);
             box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, 0.2);
             text-align: center;
@@ -37,19 +37,84 @@
             }
         }
 
+        form {
+            background: rgba(58, 58, 60, 0.3);
+            padding: 3em;
+            height: auto;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            position: relative;
+            transition: all 0.2s ease-in-out;
+        }
+
         p {
-            font-weight: 500;
-            color: #fff;
-            opacity: 0.7;
+            color: white;
             font-size: 1.4rem;
             margin-top: 0;
             margin-bottom: 60px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #ddd;
+            font-size: 12px;
+
+            &:hover {
+                text-shadow: 2px 2px 6px #00000040;
+            }
+
+            &:active {
+                text-shadow: none;
+            }
+        }
+
+        input {
+            background: transparent;
+            width: 200px;
+            padding: 1em;
+            margin-bottom: 2em;
+            border: none;
+            border-left: 1px solid rgba(58, 58, 60, 0.3);
+            border-top: 1px solid rgba(58, 58, 60, 0.3);
+            border-radius: 5000px;
+            backdrop-filter: blur(5px);
+            box-shadow: 4px 4px 60px rgba(0, 0, 0, 0.2);
+            color: #fff;
+            transition: all 0.2s ease-in-out;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.1);
+                box-shadow: 4px 4px 60px 8px rgba(0, 0, 0, 0.2);
+            }
+
+            &[type="email"],
+            &[type="password"] {
+
+                &:focus {
+                    background: rgba(255, 255, 255, 0.1);
+                    box-shadow: 4px 4px 60px 8px rgba(0, 0, 0, 0.2);
+                }
+            }
+
+            &[type="button"] {
+                margin-top: 10px;
+                /* width: 150px; */
+                font-size: 1rem;
+
+                &:hover {
+                    cursor: pointer;
+                }
+
+                &:active {
+                    background: rgba(255, 255, 255, 0.2);
+                }
+            }
         }
 
         ::placeholder {
-            font-family: Montserrat, sans-serif;
-            font-weight: 400;
             color: #fff;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
         }
@@ -58,11 +123,10 @@
             background: rgba(58, 58, 60, 0.3);
             backdrop-filter: blur(10px);
             border-radius: 10px;
-            border-left: 1px solid rgba(58, 58, 60, 0.3);
-            border-top: 1px solid rgba(58, 58, 60, 0.3);
             box-shadow: 10px 10px 60px -8px rgba(0, 0, 0, 0.2);
             position: absolute;
             transition: all 0.2s ease;
+
         }
 
         .drop-1 {
@@ -115,21 +179,11 @@
 </head>
 
 <body>
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
-
     <div class="container">
 
         <div class="error">
             <p><strong>This is our project's backend page.</strong></p>
-            <p style="text-align: left;">Our AP CSP project introduces a cutting-edge video sharing website, providing
-                users with a platform to upload, explore,
-                and engage with diverse video content. With an intuitive interface, creators can showcase their talents
-                by uploading
-                their own content. Viewers can enjoy watching videos from their favorite content creators. Uur website
-                redefines digital
-                interaction, offering a groundbreaking solution for sharing and discovering compelling video content.
-            </p>
+            <p style="text-align: left;">desc</p>
         </div>
 
         <!-- square things in the background -->

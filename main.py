@@ -19,7 +19,7 @@ from api.anime import anime_api
 
 # from api.player import player_api
 # database migrations
-from model.users import initUsers, initVideos
+from model.users import initUsers
 
 # from model.players import initPlayers
 from model.animes import initMessages
