@@ -1,17 +1,8 @@
-""" database dependencies to support sqliteDB examples """
-
 from random import randrange
-from datetime import date
-import os, base64
 import json
-
 from __init__ import app, db
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash, check_password_hash
-
-
-""" Tutorial: https://www.sqlalchemy.org/library.html#tutorials, try to get into Python shell and follow along """
-
 
 # Define the User class to manage actions in the 'users' table
 # -- Object Relational Mapping (ORM) is the key concept of SQLAlchemy
@@ -25,7 +16,6 @@ class User(db.Model):
     _uid = db.Column(db.String(255), unique=True, nullable=False)
     _password = db.Column(db.String(255), unique=False, nullable=False)
     _email = db.Column(db.String(255), unique=True, nullable=False)
-    _role = db.Column(db.String(20), default="User", nullable=False)
 
     # Defines a relationship between User record and Notes table, one-to-many (one user to many notes)
     # posts = db.relationship("Post", cascade="all, delete", backref="users", lazy=True)
@@ -36,14 +26,12 @@ class User(db.Model):
         name,
         uid,
         email,
-        password="123qwerty",
-        role="User",
+        password="password",
     ):
         self._name = name  # variables with self prefix become part of the object,
         self._uid = uid
         self.set_password(password)
         self._email = email
-        self._role = role
 
     # a name getter method, extracts name from object
     @property
@@ -113,17 +101,6 @@ class User(db.Model):
             db.session.remove()
             return None
 
-    @property
-    def role(self):
-        return self._role
-
-    @role.setter
-    def role(self, role):
-        self._role = role
-
-    def is_admin(self):
-        return self._role == "Admin"
-
     # ... (existing code)
 
     # CRUD read converts self to dictionary
@@ -133,7 +110,6 @@ class User(db.Model):
             "id": self.id,
             "name": self.name,
             "uid": self.uid,
-            "role": self.role,
             "email": self.email,
             # "post s": [post.read() for post in self.posts]
         }
@@ -183,7 +159,6 @@ def initUsers():
             uid="meowZedong",
             email="meowZedong@gmail.com",
             password="password",
-            role="Admin",
         )
         u2 = User(
             name="Aashray Rajagopalan",
