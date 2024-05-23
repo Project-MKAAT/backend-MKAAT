@@ -11,7 +11,6 @@ anime_api = Blueprint("anime_api", __name__, url_prefix="/api/anime/")
 api = Api(anime_api)
 
 
-# helper function for quicksort
 def partition(arr, criteria, low, high):
     pivot = arr[high]
     i = low - 1
@@ -28,15 +27,11 @@ def partition(arr, criteria, low, high):
     return i + 1
 
 
-# quick sort algorithm
-def quickSort(arr, criteria, isReversed, low, high):
+def quickSort(arr, criteria, low, high):
     if low < high:
-        pi = partition(arr, low, high)
-        quickSort(arr, low, pi - 1)
-        quickSort(arr, pi + 1, high)
-
-    if isReversed:
-        arr.reverse()
+        pi = partition(arr, criteria, low, high)
+        arr = quickSort(arr, criteria, low, pi - 1)
+        arr = quickSort(arr, criteria, pi + 1, high)
 
     return arr
 
@@ -85,8 +80,12 @@ class AnimeAPI:
             json_ready = [message.read() for message in messages]
 
             # sort by critera
-            json_ready = quickSort(json_ready, criteria, isReversed)
-            return jsonify(json_ready)
+            json_ready = quickSort(json_ready, criteria, 0, len(json_ready) - 1)
+
+            if isReversed:
+                json_ready.reverse()
+
+            return jsonify(json_ready)   
 
 
 api.add_resource(AnimeAPI._CRUD, "/")
