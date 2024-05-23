@@ -41,8 +41,7 @@ class UserAPI:
             password = body.get("password")
             
             # 1: Key code block, setup USER OBJECT
-            preferences = body.get("preferences")
-            uo = User(name=name, uid=uid, email=email, preferences=preferences)
+            uo = User(name=name, uid=uid, email=email)
 
             # set password if provided
             if password is not None:
@@ -70,23 +69,19 @@ class UserAPI:
         def put(self):
             body = request.get_json()  # get the body of the request
             uid = body.get("uid")  # get the UID (Know what to reference)
-            items = body.get("items")
-            points = body.get("points")
             users = User.query.all()
             for user in users:
                 if user.uid == uid:
-                    user.update("", uid, "", points, items)
+                    user.update("", uid, "")
             return f"{user.read()} Updated"
 
         def put(self):
             body = request.get_json()  # get the body of the request
             uid = body.get("uid")  # get the UID (Know what to reference)
-            items = body.get("items")
-            points = body.get("points")
             users = User.query.all()
             for user in users:
                 if user.uid == uid:
-                    user.update("", uid, "", points, items)
+                    user.update("", uid, "")
             return f"{user.read()} Updated"
 
     class _Update(Resource):
@@ -125,11 +120,7 @@ class UserAPI:
         def put(self):
             body = request.get_json()
             uid = body.get("uid")
-            points = body.get("points")
             users = User.query.all()
-            for user in users:
-                if user.uid == uid:
-                    user.update_points(points)
 
     class _Security(Resource):
         def post(self):

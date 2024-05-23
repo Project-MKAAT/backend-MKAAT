@@ -85,7 +85,7 @@ class AnimeAPI:
             if isReversed:
                 json_ready.reverse()
 
-            return jsonify(json_ready)   
+            return jsonify(json_ready)
 
 
 api.add_resource(AnimeAPI._CRUD, "/")

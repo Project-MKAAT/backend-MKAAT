@@ -19,11 +19,9 @@ from api.anime import anime_api
 
 # from api.player import player_api
 # database migrations
-from api.inflation import inflation_api
 from model.users import initUsers, initVideos
 
 # from model.players import initPlayers
-from model.inflation import initInflation
 from model.animes import initMessages
 
 # setup App pages
@@ -37,10 +35,6 @@ db.init_app(app)
 
 # register URIs
 app.register_blueprint(user_api)  # register api routes
-app.register_blueprint(video_api)
-app.register_blueprint(message_api)
-# app.register_blueprint(player_api)
-app.register_blueprint(inflation_api)
 app.register_blueprint(anime_api)
 app.register_blueprint(app_projects) # register app pages
 
@@ -87,7 +81,6 @@ custom_cli = AppGroup("custom", help="Custom commands")
 def generate_data():
     initVideos()
     initUsers()
-    initInflation()
     initMessages()
 
 # Register the custom command group with the Flask application
