@@ -1,20 +1,148 @@
-{% extends "layouts/base.html" %}
-{% set project = "404" %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block body %}
-    <div class="index">
-        <div class="center-block" style="margin: 2% 10% 10%; font-family: gilroy,serif;">
-            <div class="col-12" style="text-align: center;">
-                <h1><strong>Something Went Wrong</strong></h1>
-            </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            /* background: black; */
+            background: red;
+            color: white;
+            font-family: -apple-system, system-ui, BlinkMacSystemFont;
+            font-weight: 600;
+        }
 
-            <div class="jumbotron jumbotron-fluid" style="text-align: center; ">
-                <h2>Engineering is on the case!</h2>
-                <a href="/">Go Home</a>
-            </div>
+        .container {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            top: 50%;
+            left: 50%;
+        }
+
+        .error {
+            background: rgba(58, 58, 60, 0.3);
+            padding: 3em;
+            height: auto;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            position: relative;
+            transition: all 0.2s ease-in-out;
+
+            &:hover {
+                box-shadow: 4px 4px 60px 8px rgba(0, 0, 0, 0.2);
+            }
+        }
+
+        p {
+            color: white;
+            font-size: 1.4rem;
+            margin-top: 0;
+            margin-bottom: 60px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #ddd;
+            font-size: 12px;
+
+            &:hover {
+                text-shadow: 2px 2px 6px #00000040;
+            }
+
+            &:active {
+                text-shadow: none;
+            }
+        }
+
+        ::placeholder {
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+        }
+
+        .drop {
+            background: rgba(58, 58, 60, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            box-shadow: 10px 10px 60px -8px rgba(0, 0, 0, 0.2);
+            position: absolute;
+            transition: all 0.2s ease;
+
+        }
+
+        .drop-1 {
+            height: 80px;
+            width: 80px;
+            top: -20px;
+            left: -40px;
+            z-index: -1;
+        }
+
+        .drop-2 {
+            height: 80px;
+            width: 80px;
+            bottom: -30px;
+            right: -10px;
+        }
+
+        .drop-3 {
+            height: 100px;
+            width: 100px;
+            bottom: 120px;
+            right: -50px;
+            z-index: -1;
+        }
+
+        .drop-4 {
+            height: 120px;
+            width: 120px;
+            top: -60px;
+            right: -60px;
+        }
+
+        .drop-5 {
+            height: 60px;
+            width: 60px;
+            bottom: 170px;
+            left: 90px;
+            z-index: -1;
+        }
+
+
+        a,
+        input:focus,
+        select:focus,
+        textarea:focus,
+        button:focus {
+            outline: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="error">
+            <p><strong>404 error</strong></p>
+            <p style="text-align: left;">Uh oh. You're not supposed to be here... naughty dog 😈</p>
+            <!-- flag{n4ugh7y_d0g_6D79206E7574732069746368} -->
+            <a href="http://127.0.0.1:8069/">Return to Home</a>
+        </div>
+
+        <!-- square things in the background -->
+        <div class="drops">
+            <div class="drop drop-1"></div>
+            <div class="drop drop-2"></div>
+            <div class="drop drop-3"></div>
+            <div class="drop drop-4"></div>
+            <div class="drop drop-5"></div>
         </div>
     </div>
-{% endblock %}
 
-{% block background %}
-{% endblock %}
+
+</body>
+
+</html>
