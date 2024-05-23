@@ -15,8 +15,6 @@ from __init__ import app, db, cors  # Definitions initialization
 
 # setup APIs
 from api.user import user_api  # Blueprint import api definition
-from api.video import video_api
-from api.comment import message_api
 from api.anime import anime_api
 
 # from api.player import player_api
