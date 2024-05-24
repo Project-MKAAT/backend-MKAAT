@@ -10,6 +10,7 @@ from __init__ import app, db
 from sqlalchemy.exc import IntegrityError
 import re
 import ast
+import os
 
 class Trending(db.Model):
     __tablename__ = 'trendingAnime'
@@ -53,9 +54,80 @@ class Trending(db.Model):
             "name": self.name,
             "searches": self.searches
         }
+def fetchAnimeTitles():
+    animeTitles = []
 
+    urls = [ 'https://myanimelist.net/topanime.php?limit=0' , 'https://myanimelist.net/topanime.php?limit=50' ] 
+    for url in urls:
+        response = requests.get(url)
+
+        soup = BeautifulSoup(response.content, 'html.parser')
+
+        blockquote_tags = soup.find_all('h3')
+
+        animeTags = [tag.get_text() for tag in blockquote_tags]
+
+        for i in animeTags:
+            animeTitles.append(i)
+        animeTitles = [item for item in animeTitles if "More" not in item]
+    with open('animeTitles.txt', 'a') as file:
+        file.write(str(animeTitles))
+
+def getSearches():
+    animeRelevancy = []
+    with open('animeTitles.txt', 'r') as file:
+        lines = file.readlines()
+        stringAnime = file.readlines()[0]
+    listAnime = stringAnime.strip('][').split(', ')
+    listAnime = [string.replace("'", "") for string in listAnime]
+
+    def get_weekly_searches(keyword):
+        pytrends = TrendReq(hl='en-US', tz=360)
+        kw_list = [keyword]
+
+        # Fetch interest over time for the past 7 days
+        pytrends.build_payload(kw_list, cat=0, timeframe='now 1-d', geo='', gprop='')
+        data = pytrends.interest_over_time()
+
+        # Check if the data is not empty
+        if not data.empty:
+            data = data.reset_index()
+            return data
+        else:
+            return None
+
+    def summarize_searches(data, keyword):
+        if data is not None:
+            total_searches = data[keyword].sum()
+            return(total_searches)
+
+
+    while listAnime:
+        try:
+            for title in listAnime:
+                data = get_weekly_searches(title)
+                animeRelevancy.append(dict(name=str(title), searches=summarize_searches(data,title)))
+                with open('animes.txt', 'a') as file:
+                    file.write(str(dict(name=str(title), searches=summarize_searches(data,title))))
+                listAnime.remove(title)
+                with open('animeTitles.txt', 'w') as file:
+                    file.write(str(listAnime))
+        except requests.exceptions.HTTPError as http_err:
+            if http_err.response.status_code == 429:
+                print("429 again... waiting")
+                time.sleep(30)            
+            else:
+                print("ERROR OTHER THAN HTTP! SHOOT")
+                break
+            
+        except Exception as e:
+            print(f"diff error lol: {e}")
+            break
+            
 def initTrending():
     with app.app_context():
+        # fetchAnimeTitles()
+        getSearches()
         db.create_all()
         names = []
         searche = []
