@@ -77,7 +77,8 @@ def getSearches():
     animeRelevancy = []
     with open('animeTitles.txt', 'r') as file:
         lines = file.readlines()
-        stringAnime = file.readlines()[0]
+        stringAnime = lines[0]
+
     listAnime = stringAnime.strip('][').split(', ')
     listAnime = [string.replace("'", "") for string in listAnime]
 
@@ -101,7 +102,7 @@ def getSearches():
             total_searches = data[keyword].sum()
             return(total_searches)
 
-
+    print(listAnime)
     while listAnime:
         try:
             for title in listAnime:
@@ -112,6 +113,7 @@ def getSearches():
                 listAnime.remove(title)
                 with open('animeTitles.txt', 'w') as file:
                     file.write(str(listAnime))
+                print(animeRelevancy)
         except requests.exceptions.HTTPError as http_err:
             if http_err.response.status_code == 429:
                 print("429 again... waiting")
@@ -122,7 +124,7 @@ def getSearches():
             
         except Exception as e:
             print(f"diff error lol: {e}")
-            break
+            time.sleep(15)
             
 def initTrending():
     with app.app_context():
