@@ -77,7 +77,7 @@ def getSearches():
     animeRelevancy = []
     with open('animeTitles.txt', 'r') as file:
         lines = file.readlines()
-        stringAnime = file.readlines()[0]
+        stringAnime = lines[0]
     listAnime = stringAnime.strip('][').split(', ')
     listAnime = [string.replace("'", "") for string in listAnime]
 
