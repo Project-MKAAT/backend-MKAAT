@@ -29,7 +29,7 @@ def partition(arr, criteria, low, high):
 
 
 # quick sort algorithm
-def quickSort(arr, criteria, isReversed, low, high):
+def quickSort(arr, isReversed, low, high):
     if low < high:
         pi = partition(arr, low, high)
         quickSort(arr, low, pi - 1)
@@ -43,38 +43,44 @@ def quickSort(arr, criteria, isReversed, low, high):
 
 class AnimeAPI:
     class _CRUD(Resource):
+        # POST http://127.0.0.1:8069/api/anime/
         @token_required
-        def post(self, current_user, Anime):
-            body = request.get_json()  # get request
+        def post(self, _):
+            # TODO #6
+            # body = request.get_json()  # get request
 
-            # user rating and the title
-            rating = int(body.get("rating"))
-            title = body.get("title")
+            # # user rating and the title
+            # rating = int(body.get("rating"))
+            # title = body.get("title")
 
-            # data checking
-            if not body and not title:
-                return {"rating": "Content is missing"}, 400
+            # # data checking
+            # if not body and not title:
+            #     return {"rating": "Content is missing"}, 400
 
-            userRating = Anime(uid=current_user.title, _rating=rating)
+            # userRating = Anime(title=title, userRating=rating)
 
             try:
-                newRating = userRating.create()
-                return jsonify(newRating.read()), 201
+                raise NotImplementedError
+                # userRating = Anime(title="Tales of Aryan", userRating="2")
+
+                # userRating.update_rating(title="Tales of Aryan", userRating="2")
+
+                # # newRating = userRating.create()
+                # # return jsonify(newRating.read()), 201
             except Exception as e:
                 return {"rating": f"Failed to create rating: {str(e)}"}, 500
 
+        # GET http://127.0.0.1:8069/api/anime/
         @token_required
         def get(self, _):  # Read Method
-            messages = Anime.query.all()
-            json_ready = [message.read() for message in messages]
+            shows = Anime.query.all()
+            json_ready = [show.read() for show in shows]
             return jsonify(json_ready)
 
-        def put(self, old_message, new_message, likes):
-            Anime.update(old_message, new_message, likes)
-
     class _GetSorted(Resource):
+        # POST http://127.0.0.1:8069/api/anime/getsorted
         @token_required
-        def post(self, current_user):
+        def post(self):
             body = request.get_json()  # get request
 
             # get critera

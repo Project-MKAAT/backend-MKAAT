@@ -10,17 +10,19 @@ from datetime import datetime
 
 
 class Anime(db.Model):
-    __tablename__ = "databases"  # table name is plural, class name is singular
+    # database name (change to "animes" later)
+    # TODO #5
+    __tablename__ = "databases"
 
-    # Define the Message schema with "vars" from object
-    _id = db.Column(db.Integer, primary_key=True)
+    # database fields
+    id = db.Column(db.Integer, primary_key=True)
     _title = db.Column(db.String(255), unique=False, nullable=False)
     _release = db.Column(db.DateTime, nullable=False, default=date.today())
     _genre = db.Column(db.String(255), unique=False, nullable=False)
     _rating = db.Column(db.Integer, nullable=False, default=0)
     _userRating = db.Column(db.Integer, nullable=False, default=0)
 
-    # constructor of a Message object, initializes the instance variables within object (self)
+    # initialize
     def __init__(self, title, release, genre, rating, userRating):
         self._title = title
         self._release = release
@@ -28,61 +30,53 @@ class Anime(db.Model):
         self._rating = rating
         self._userRating = userRating
 
-    # a title getter method, extracts title from object
+    # all the getters/setters for each field
+
     @property
     def title(self):
         return self._title
 
-    # a setter function, allows title to be updated after initial object creation
     @title.setter
     def is_title(self, title):
         self._title = title
 
-    # a message getter method, extracts message from object
     @property
     def release(self):
         return self._release
 
-    # a setter function, allows release to be updated after initial object creation
     @release.setter
     def release(self, release):
         self._release = release
 
-    # a message getter method, extracts message from object
     @property
     def genre(self):
         return self._genre
 
-    # a setter function, allows genre to be updated after initial object creation
     @genre.setter
     def genre(self, genre):
         self._genre = genre
 
-    # a message getter method, extracts message from object
     @property
     def rating(self):
         return self._rating
 
-    # a setter function, allows rating to be updated after initial object creation
     @rating.setter
     def rating(self, rating):
         self._rating = rating
 
-    # a message getter method, extracts message from object
     @property
     def userRating(self):
         return self._userRating
 
-    # a setter function, allows userRating to be updated after initial object creation
     @userRating.setter
     def userRating(self, userRating):
         self._userRating = userRating
 
     def create(self):
+        # adding shows
         try:
-            # creates a person object from User(db.Model) class, passes initializers
-            db.session.add(self)  # add prepares to persist person object to Users table
-            db.session.commit()  # SqlAlchemy "unit of work pattern" requires a manual commit
+            db.session.add(self)
+            db.session.commit()
             return self
         except IntegrityError:
             db.session.remove()
@@ -99,13 +93,10 @@ class Anime(db.Model):
             "userRating": self.userRating,
         }
 
-    # CRUD update: updates message content
-    # returns self
-    def update(self, old_message, new_message):
-        message = Anime.query.get(old_message)
-        message.message = new_message
-        db.session.commit()
-        return self
+    def update_rating(self, title="", userRating=""):
+        print("asdfasdfasf")
+        for i in len(self):
+            print(i)
 
     # CRUD delete: remove self
     # None
@@ -115,7 +106,7 @@ class Anime(db.Model):
         return None
 
 
-def initMessages():
+def initShows():
     with app.app_context():
         """Create database and tables"""
         db.create_all()
@@ -156,4 +147,4 @@ def initMessages():
 
 
 if __name__ == "__main__":
-    initMessages()
+    initShows()

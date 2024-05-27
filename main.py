@@ -15,18 +15,14 @@ from __init__ import app, db, cors  # Definitions initialization
 
 # setup APIs
 from api.user import user_api  # Blueprint import api definition
-from api.video import video_api
-from api.comment import message_api
 from api.anime import anime_api
 
 # from api.player import player_api
 # database migrations
-from api.inflation import inflation_api
-from model.users import initUsers, initVideos
+from model.users import initUsers
 
 # from model.players import initPlayers
-from model.inflation import initInflation
-from model.animes import initMessages
+from model.animes import initShows
 
 # setup App pages
 from projects.projects import (
@@ -39,10 +35,7 @@ db.init_app(app)
 
 # register URIs
 app.register_blueprint(user_api)  # register api routes
-app.register_blueprint(video_api)
-app.register_blueprint(message_api)
 # app.register_blueprint(player_api)
-app.register_blueprint(inflation_api)
 app.register_blueprint(anime_api)
 app.register_blueprint(app_projects) # register app pages
 
