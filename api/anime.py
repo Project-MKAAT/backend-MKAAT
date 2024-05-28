@@ -12,28 +12,24 @@ api = Api(anime_api)
 
 
 def partition(arr, criteria, low, high):
-    pivot = arr[high]
+    pivot = arr[high][criteria]
     i = low - 1
 
     for j in range(low, high):
-        if arr[j][criteria] <= pivot[criteria]:
+        if arr[j][criteria] <= pivot:
             i = i + 1
-            (arr[i][criteria], arr[j][criteria]) = (arr[j][criteria], arr[i][criteria])
+            arr[i], arr[j] = arr[j], arr[i]
 
-    (arr[i + 1][criteria], arr[high][criteria]) = (
-        arr[high][criteria],
-        arr[i + 1][criteria],
-    )
+    arr[i + 1], arr[high] = arr[high], arr[i + 1]
     return i + 1
-
 
 def quickSort(arr, criteria, low, high):
     if low < high:
         pi = partition(arr, criteria, low, high)
-        arr = quickSort(arr, criteria, low, pi - 1)
-        arr = quickSort(arr, criteria, pi + 1, high)
-
+        quickSort(arr, criteria, low, pi - 1)
+        quickSort(arr, criteria, pi + 1, high)
     return arr
+
 
 
 class AnimeAPI:
