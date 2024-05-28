@@ -9,6 +9,7 @@ from flask import jsonify
 from __init__ import app, db
 from sqlalchemy.exc import IntegrityError
 import re
+from api.anime import quickSort
 import ast
 import os
 
@@ -144,13 +145,13 @@ def initTrending():
             print(animeList)
             data = [entry for entry in animeList if entry["searches"] is not None]
 
-            sorted_data = sorted(data, key=lambda x: x['searches'], reverse=True)           
+            sorted_data = sorted(data, key=lambda x: x['searches'])    
         for entry in sorted_data:
             names.append(entry['name'])
             searche.append(entry['searches'])
+
         for i in range(len(names)):
-            temp = Trending(name=json.dumps(names[i]), searches=searche[i])
+            temp = Trending(name=names[i], searches=searche[i])
             relevancy.append(temp)
-        print(relevancy)
         for i in relevancy:
             i.create()
