@@ -12,12 +12,13 @@ api = Api(trending_api)
 
 class TrendingAPI:
     class _CRUD(Resource):
-
-        @token_required
-        def get(self, _):  # Read Method
-            messages = Trending.query.all()
-            json_ready = [message.read() for message in messages]
-            return jsonify(json_ready)
+        
+        def get(self):  # Read Method
+            animes = Trending.query.all()  # read/extract all users from database
+            json_ready = [anime.read() for anime in animes]  # prepare output in json
+            return jsonify(
+                json_ready
+            )
 
 
 

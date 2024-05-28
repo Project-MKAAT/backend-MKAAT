@@ -34,7 +34,7 @@ class Trending(db.Model):
     def searches(self):
         return self._searches
 
-    @name.setter
+    @searches.setter
     def searches(self, searches):
         self._searches = searches
     
