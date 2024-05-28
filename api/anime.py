@@ -23,13 +23,13 @@ def partition(arr, criteria, low, high):
     arr[i + 1], arr[high] = arr[high], arr[i + 1]
     return i + 1
 
+
 def quickSort(arr, criteria, low, high):
     if low < high:
         pi = partition(arr, criteria, low, high)
         quickSort(arr, criteria, low, pi - 1)
         quickSort(arr, criteria, pi + 1, high)
     return arr
-
 
 
 class AnimeAPI:
@@ -85,7 +85,7 @@ class AnimeAPI:
             if is_reversed:
                 sorted_animes.reverse()
 
-            return jsonify(sorted_animes) 
+            return jsonify(sorted_animes)
 
 
 api.add_resource(AnimeAPI._CRUD, "/")
