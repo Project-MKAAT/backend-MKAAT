@@ -118,14 +118,14 @@ def initShows():
             userRating=10.0,
         )
         a2 = Anime(
-            title="Jojo's Bizare Adventure",
+            title="Aashray Aubstacles",
             release=datetime.strptime("9-13-2002", "%m-%d-%Y"),
             genre="Action",
             rating=6.9,
             userRating=8.8,
         )
         a3 = Anime(
-            title="Naruto",
+            title="Trevor x Trevor",
             release=datetime.strptime("8-17-2008", "%m-%d-%Y"),
             genre="Action",
             rating=7.2,

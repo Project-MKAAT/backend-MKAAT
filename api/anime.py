@@ -74,8 +74,7 @@ class AnimeAPI:
                 return {"rating": f"Failed to create rating: {str(e)}"}, 500
 
         # GET http://127.0.0.1:8069/api/anime/
-        @token_required
-        def get(self, _):  # Read Method
+        def get(self):  # Read Method
             shows = Anime.query.all()
             json_ready = [show.read() for show in shows]
             return jsonify(json_ready)
