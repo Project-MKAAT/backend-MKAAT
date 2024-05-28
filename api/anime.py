@@ -60,6 +60,9 @@ class AnimeAPI:
             # userRating = Anime(title=title, userRating=rating)
 
             try:
+                
+                
+                
                 raise NotImplementedError
                 # userRating = Anime(title="Tales of Aryan", userRating="2")
 
@@ -80,7 +83,7 @@ class AnimeAPI:
     class _GetSorted(Resource):
         # POST http://127.0.0.1:8069/api/anime/getsorted
         @token_required
-        def post(self):
+        def post(self, _):
             body = request.get_json()  # get request
 
             # get critera

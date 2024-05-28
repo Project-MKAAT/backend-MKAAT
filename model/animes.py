@@ -15,8 +15,7 @@ class Anime(db.Model):
     __tablename__ = "databases"
 
     # database fields
-    id = db.Column(db.Integer, primary_key=True)
-    _title = db.Column(db.String(255), unique=False, nullable=False)
+    _title = db.Column(db.String(255), primary_key=True, unique=False, nullable=False)
     _release = db.Column(db.DateTime, nullable=False, default=date.today())
     _genre = db.Column(db.String(255), unique=False, nullable=False)
     _rating = db.Column(db.Integer, nullable=False, default=0)
