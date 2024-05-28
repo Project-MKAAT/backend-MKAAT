@@ -58,8 +58,7 @@ class AnimeAPI:
             except Exception as e:
                 return {"rating": f"Failed to create rating: {str(e)}"}, 500
 
-        @token_required
-        def get(self, _):  # Read Method
+        def get(self):  # Read Method
             messages = Anime.query.all()
             json_ready = [message.read() for message in messages]
             return jsonify(json_ready)
