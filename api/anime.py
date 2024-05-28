@@ -11,6 +11,7 @@ anime_api = Blueprint("anime_api", __name__, url_prefix="/api/anime/")
 api = Api(anime_api)
 
 
+# this code works now
 def partition(arr, criteria, low, high):
     pivot = arr[high][criteria]
     i = low - 1
@@ -63,8 +64,7 @@ class AnimeAPI:
             Anime.update(old_message, new_message, likes)
 
     class _GetSorted(Resource):
-        @token_required
-        def post(self, current_user):
+        def post(self):
             body = request.get_json()
             criteria = body.get("criteria")
             is_reversed = body.get("isReversed", False)
