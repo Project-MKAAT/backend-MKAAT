@@ -45,6 +45,7 @@ def quickSort(arr, isReversed, low, high):
 class AnimeAPI:
     class _CRUD(Resource):
         # POST http://127.0.0.1:8069/api/anime/
+        # {"title": "anime title", "rating": "X"}
         @token_required
         def post(self, _):
             try:
@@ -66,6 +67,7 @@ class AnimeAPI:
                         for show in shows:
                             if show.title == title:
                                 show.update_rating(rating)
+                                return f"Added user rating {rating} for show {show.title}"
                                 break
                     except Exception as e:
                         return {"error": "Something went wrong", "message": str(e)}, 500
