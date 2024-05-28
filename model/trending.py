@@ -129,7 +129,8 @@ def getSearches():
 def initTrending():
     with app.app_context():
         # fetchAnimeTitles()
-        getSearches()
+        if 1!=1:
+            getSearches()
         db.create_all()
         names = []
         searche = []
