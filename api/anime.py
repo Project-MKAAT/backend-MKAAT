@@ -58,17 +58,16 @@ class AnimeAPI:
                 if not body and not title:
                     return {"rating": "Content is missing"}, 400
                 else:
-                    # go thru shows to find the right one
-                    # then add the rating
+                    # find right show and add rating
                     # TODO #7
                     try:
-                        shows = Anime.query.all()
+                        show = Anime.query.filter_by(
+                            _title=title
+                        ).first()  # query function
 
-                        for show in shows:
-                            if show.title == title:
-                                show.update_rating(rating)
-                                return f"Added user rating {rating} for show {show.title}"
-                                break
+                        show.update_rating(rating)
+
+                        return f"Added user rating {rating} for show {show.title}"
                     except Exception as e:
                         return {"error": "Something went wrong", "message": str(e)}, 500
             except Exception as e:
