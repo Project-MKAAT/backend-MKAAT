@@ -65,22 +65,27 @@ class AnimeAPI:
     class _GetSorted(Resource):
         @token_required
         def post(self, current_user):
-            body = request.get_json()  # get request
-
-            # get critera
+            body = request.get_json()
             criteria = body.get("criteria")
-            isReversed = eval(body.get("isReversed"))
+            is_reversed = body.get("isReversed", False)
 
-            messages = Anime.query.all()
-            json_ready = [message.read() for message in messages]
+            if criteria not in ["title", "release", "genre", "rating", "userRating"]:
+                return jsonify({"message": "Invalid sorting criteria"}), 400
 
-            # sort by critera
-            json_ready = quickSort(json_ready, criteria, 0, len(json_ready) - 1)
+            # Retrieve all anime entries from the database
+            animes = Anime.query.all()
 
-            if isReversed:
-                json_ready.reverse()
+            # Convert anime entries to dictionaries
+            json_ready = [anime.read() for anime in animes]
 
-            return jsonify(json_ready)   
+            # Sort the anime entries based on the specified criteria
+            sorted_animes = sorted(json_ready, key=lambda x: x[criteria])
+
+            # Reverse the list if specified
+            if is_reversed:
+                sorted_animes.reverse()
+
+            return jsonify(sorted_animes) 
 
 
 api.add_resource(AnimeAPI._CRUD, "/")
