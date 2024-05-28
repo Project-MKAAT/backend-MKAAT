@@ -10,9 +10,8 @@ from datetime import datetime
 
 
 class Anime(db.Model):
-    # database name (change to "animes" later)
-    # TODO #5
-    __tablename__ = "databases"
+    # database name
+    __tablename__ = "animes"
 
     # database fields
     _title = db.Column(db.String(255), primary_key=True, unique=False, nullable=False)
@@ -92,10 +91,10 @@ class Anime(db.Model):
             "userRating": self.userRating,
         }
 
-    def update_rating(self, title="", userRating=""):
-        print("asdfasdfasf")
-        for i in len(self):
-            print(i)
+    def update_rating(self, newRating):
+        self.userRating = newRating
+        db.session.commit()
+        return self
 
     # CRUD delete: remove self
     # None

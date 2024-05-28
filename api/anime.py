@@ -3,6 +3,7 @@ from flask_restful import Api, Resource
 from datetime import datetime
 import jwt
 from auth_middleware import token_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from model.animes import Anime  # Import the Message class
 from __init__ import app, db
 
@@ -46,30 +47,28 @@ class AnimeAPI:
         # POST http://127.0.0.1:8069/api/anime/
         @token_required
         def post(self, _):
-            # TODO #6
-            # body = request.get_json()  # get request
-
-            # # user rating and the title
-            # rating = int(body.get("rating"))
-            # title = body.get("title")
-
-            # # data checking
-            # if not body and not title:
-            #     return {"rating": "Content is missing"}, 400
-
-            # userRating = Anime(title=title, userRating=rating)
-
             try:
-                
-                
-                
-                raise NotImplementedError
-                # userRating = Anime(title="Tales of Aryan", userRating="2")
+                body = request.get_json()
 
-                # userRating.update_rating(title="Tales of Aryan", userRating="2")
+                title = body.get("title")
+                rating = int(body.get("rating"))
 
-                # # newRating = userRating.create()
-                # # return jsonify(newRating.read()), 201
+                # data check
+                if not body and not title:
+                    return {"rating": "Content is missing"}, 400
+                else:
+                    # go thru shows to find the right one
+                    # then add the rating
+                    # TODO #7
+                    try:
+                        shows = Anime.query.all()
+
+                        for show in shows:
+                            if show.title == title:
+                                show.update_rating(rating)
+                                break
+                    except Exception as e:
+                        return {"error": "Something went wrong", "message": str(e)}, 500
             except Exception as e:
                 return {"rating": f"Failed to create rating: {str(e)}"}, 500
 

@@ -93,16 +93,16 @@ class UserAPI:
         def post(self):
             body = request.get_json()
             uid = body.get("uid")
-            
+
             print(uid)
             if uid is None:
                 return {"message": f"User ID missing"}, 400
-            
+
             email = body.get("email")
             print(email)
             if email is None or "@" not in email:
                 return {"message": f"Email is blank or has an invalid format"}, 400
-            
+
             user = User.query.filter_by(_uid=uid).first()
             print(user)
             if user:
