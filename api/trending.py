@@ -67,7 +67,14 @@ class TrendingAPI:
             criteria = body.get("criteria")
             is_reversed = body.get("isReversed")
 
-            if criteria not in ["title", "release", "genre", "rating", "userRating", "popularity"]:
+            if criteria not in [
+                "title",
+                "release",
+                "genre",
+                "rating",
+                "userRating",
+                "popularity",
+            ]:
                 return jsonify({"message": "Invalid sorting criteria"}), 400
 
             # Retrieve all anime entries from the database
@@ -76,17 +83,18 @@ class TrendingAPI:
             # Convert anime entries to dictionaries
             json_ready = [anime.read() for anime in animes]
 
-            # Ensure that userRating is a float
+            # depending on the criteria, itll return in a diff order
             if criteria == "userRating":
                 sorted_animes = sorted(json_ready, key=lambda x: float(x[criteria]))
+                sorted_animes.reverse()
+                return jsonify(sorted_animes)
+            elif criteria == "title":
+                sorted_animes = sorted(json_ready, key=lambda x: x[criteria])
+                return jsonify(sorted_animes)
             else:
                 sorted_animes = sorted(json_ready, key=lambda x: x[criteria])
-
-            # Reverse the list if specified
-            if is_reversed is True:
                 sorted_animes.reverse()
-
-            return jsonify(sorted_animes)
+                return jsonify(sorted_animes)
 
 
 api.add_resource(TrendingAPI._CRUD, "/")
