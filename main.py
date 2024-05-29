@@ -5,12 +5,13 @@ from flask import (
     render_template,
     request,
     send_from_directory,
-)  # import render_template from "public" flask libraries
+)  
+# import render_template from "public" flask libraries
 from flask.cli import AppGroup
 
 
 # import "packages" from "this" project
-from __init__ import app, db, cors  # Definitions initialization
+from __init__ import app, db, cors
 
 
 # setup APIs
@@ -19,7 +20,6 @@ from api.user import user_api  # Blueprint import api definition
 
 from api.anime import anime_api
 
-# from api.player import player_api
 # database migrations
 from model.users import initUsers
 from model.trending import initTrending
@@ -41,19 +41,18 @@ app.register_blueprint(anime_api)
 app.register_blueprint(trending_api)
 app.register_blueprint(app_projects) # register app pages
 
-
-@app.errorhandler(404)  # catch for URL not found
+# catch for URL not found
+@app.errorhandler(404) 
 def page_not_found(e):
-    # note that we set the 404 status explicitly
     return render_template("404.html"), 404
 
-
-@app.route("/")  # connects default URL to index() function
+# connects default URL to index() function
+@app.route("/")  
 def index():
     return render_template("index.html")
 
-
-@app.route("/table/")  # connects /stub/ URL to stub() function
+# connects /stub/ URL to stub() function
+@app.route("/table/")  
 def table():
     return render_template("table.html")
 
