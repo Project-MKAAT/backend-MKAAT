@@ -22,12 +22,8 @@ from api.user import user_api  # Blueprint import api definition
 # database migrations
 from model.users import initUsers
 from model.trending import initTrending
-# from model.players import initPlayers
 
-# setup App pages
-from projects.projects import (
-    app_projects,
-)  # Blueprint directory import projects definition
+# from model.players import initPlayers
 
 
 # Initialize the SQLAlchemy object to work with the Flask app instance
@@ -37,7 +33,6 @@ db.init_app(app)
 app.register_blueprint(user_api)  # register api routes
 
 app.register_blueprint(trending_api)
-app.register_blueprint(app_projects) # register app pages
 
 
 @app.errorhandler(404)  # catch for URL not found
@@ -54,9 +49,6 @@ def index():
 @app.route("/table/")  # connects /stub/ URL to stub() function
 def table():
     return render_template("table.html")
-
-
-
 
 
 @app.before_request
