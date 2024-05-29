@@ -14,11 +14,9 @@ api = Api(trending_api)
 class TrendingAPI:
     class _CRUD(Resource):
         def get(self):  # Read Method
-            animes = Trending.query.all()  # read/extract all users from database
+            animes = Trending.query.all()  # read/extract all animes from database
             json_ready = [anime.read() for anime in animes]  # prepare output in json
-            return jsonify(
-                json_ready
-            )
+            return jsonify(json_ready)
     class _UserRating(Resource):
         @token_required
         def post(self, current_user):
@@ -31,9 +29,9 @@ class TrendingAPI:
                 if anime.name == name:
                     anime.userRating = json.loads(anime.userRating)
                     print(type(anime.userRating))
-                    # anime.userRating.append({uid: rating})
-                    # anime.userRating = json.dumps(anime.userRating)
-                    # db.session.commit()
+                    anime.userRating.append({uid: rating})
+                    anime.userRating = json.dumps(anime.userRating)
+                    db.session.commit()
 
 
 
