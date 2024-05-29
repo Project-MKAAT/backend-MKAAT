@@ -11,19 +11,21 @@ trending_api = Blueprint("trending_api", __name__, url_prefix="/api/trending/")
 
 api = Api(trending_api)
 
+
 class TrendingAPI:
     class _CRUD(Resource):
         def get(self):  # Read Method
             animes = Trending.query.all()  # read/extract all animes from database
             json_ready = [anime.read() for anime in animes]  # prepare output in json
             return jsonify(json_ready)
+
     class _UserRating(Resource):
         @token_required
         def post(self, current_user):
             body = request.get_json()
-            uid = body.get('uid')
-            name = body.get('name')
-            rating = body.get('rating')
+            uid = body.get("uid")
+            name = body.get("name")
+            rating = body.get("rating")
             animes = Trending.query.all()
             for anime in animes:
                 if anime.name == name:
@@ -37,6 +39,7 @@ class TrendingAPI:
                     db.session.commit()
                     return {"message": "Rating added successfully"}, 200
             return {"message": "Anime not found"}, 404
+
 
 api.add_resource(TrendingAPI._CRUD, "/")
 api.add_resource(TrendingAPI._UserRating, "/userRating")
