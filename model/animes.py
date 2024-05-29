@@ -7,6 +7,7 @@ from __init__ import app, db
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import date
+from datetime import datetime
 
 
 class Anime(db.Model):
