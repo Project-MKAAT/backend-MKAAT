@@ -29,10 +29,14 @@ class TrendingAPI:
                 if anime.name == name:
                     anime.userRating = json.loads(anime.userRating)
                     print(type(anime.userRating))
+                    for user_rating in anime.userRating:
+                        if uid in user_rating:
+                            return {"message": "You have already rated this show."}, 400
                     anime.userRating.append({uid: rating})
                     anime.userRating = json.dumps(anime.userRating)
                     db.session.commit()
-                    return "Rating added successfully"
+                    return {"message": "Rating added successfully"}, 200
+            return {"message": "Anime not found"}, 404
 
 api.add_resource(TrendingAPI._CRUD, "/")
 api.add_resource(TrendingAPI._UserRating, "/userRating")
