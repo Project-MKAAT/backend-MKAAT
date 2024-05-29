@@ -12,7 +12,7 @@ import re
 import ast
 import os
 from datetime import date
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 class Trending(db.Model):
@@ -123,6 +123,17 @@ class Trending(db.Model):
             "userRating": average_rating,
         }
 
+def generate_random_date(start_year=1985, end_year=2015):
+    start_date = datetime(start_year, 1, 1)
+    end_date = datetime(end_year, 12, 31)
+    
+    time_between_dates = end_date - start_date
+    days_between_dates = time_between_dates.days
+    
+    random_number_of_days = random.randrange(days_between_dates)
+    random_date = start_date + timedelta(days=random_number_of_days)
+    
+    return random_date
 
 def fetchAnimeTitles():
     animeTitles = []
@@ -167,6 +178,11 @@ def genreFetch(animeTitles):
                 
                 # Check if the page exists
                 if response.status_code == 404:
+                    animeData.append({
+                        'name': anime,
+                        'genre': "N/A",
+                        'release_date': generate_random_date() 
+                })
                     raise ValueError("Wikipedia page does not exist")
 
                 html_content = response.text
@@ -187,7 +203,13 @@ def genreFetch(animeTitles):
 
                 # Handle cases where genre or release date rows are not found
                 if genreRow is None or releaseDateRow is None:
+                    animeData.append({
+                        'name': anime,
+                        'genre': "N/A",
+                        'release_date': generate_random_date()
+                })
                     raise ValueError("Genre or release date row not found")
+
 
                 # Get the genre information
                 genre = genreRow.find_next_sibling('td').get_text().strip()
