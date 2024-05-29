@@ -2,18 +2,90 @@
 {% set project = "404" %}
 
 {% block body %}
-    <div class="index">
-        <div class="center-block" style="margin: 2% 10% 10%; font-family: gilroy,serif;">
-            <div class="col-12" style="text-align: center;">
-                <h1><strong>Something Went Wrong</strong></h1>
-            </div>
+<style>
+    body {
+        background: red;
+        color: white;
+        font-family: -apple-system, system-ui, BlinkMacSystemFont;
+        font-weight: 600;
+    }
 
-            <div class="jumbotron jumbotron-fluid" style="text-align: center; ">
-                <h2>Engineering is on the case!</h2>
-                <a href="/">Go Home</a>
-            </div>
+    .container {
+        position: absolute;
+        transform: translate(-50%, -50%);
+        top: 50%;
+        left: 50%;
+    }
+
+    .error {
+        background: rgba(58, 58, 60, 0.3);
+        padding: 3em;
+        height: auto;
+        border-radius: 20px;
+        backdrop-filter: blur(10px);
+        box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        position: relative;
+    }
+
+    p {
+        color: white;
+        font-size: 1.4rem;
+        margin-top: 0;
+        margin-bottom: 60px;
+    }
+
+    .drop {
+        background: rgba(58, 58, 60, 0.3);
+        backdrop-filter: blur(10px);
+        border-radius: 10px;
+        box-shadow: 10px 10px 60px -8px rgba(0, 0, 0, 0.2);
+        position: absolute;
+    }
+
+    .drop-1 {
+        height: 80px;
+        width: 80px;
+        top: -20px;
+        left: -40px;
+        z-index: -1;
+    }
+
+    .drop-2 {
+        height: 80px;
+        width: 80px;
+        bottom: -30px;
+        right: -10px;
+        z-index: 1;
+    }
+
+    .drop-3 {
+        height: 100px;
+        width: 100px;
+        bottom: 120px;
+        right: -50px;
+        z-index: -1;
+    }
+</style>
+
+<body>
+    <div class="container">
+        <div class="drops">
+            <div class="drop drop-1"></div>
+            <div class="drop drop-2"></div>
+            <div class="drop drop-3"></div>
+            <div class="drop drop-4"></div>
+            <div class="drop drop-5"></div>
+        </div>
+
+        <div class="error">
+            <p><strong>404 Error</strong></p>
+            <p>Uh oh. You're not supposed to be here... naughty dog 😈</p>
         </div>
     </div>
+</body>
+
+</html>
 {% endblock %}
 
 {% block background %}
