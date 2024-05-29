@@ -9,3 +9,9 @@ Flask_Restful
 Flask_Cors
 PyJWT
 flask-jwt-extended
+beautifulsoup4
+pandas
+pytrends
+
+
+
