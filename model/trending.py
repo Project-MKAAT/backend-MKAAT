@@ -23,15 +23,15 @@ class Trending(db.Model):
     _genre = db.Column(db.String(255), unique=False, nullable = False)
     _releaseDate = db.Column(db.Date, unique=False, nullable = False)
     _rating = db.Column(db.Float, unique=False, nullable = False)
-    _userRating = db.Column(db.String(20), default=json.dumps([""]), unique=False, nullable = False)
+    _userRating = db.Column(db.String(20), default=json.dumps([]), unique=False, nullable = False)
     
-    def __init__(self, name="", searches=0, genre="", releaseDate=date.today(), rating=0, userRating=0):
+    def __init__(self, name="", searches=0, genre="", releaseDate=date.today(), rating=0, userRating=json.dumps([])):
         self._name = name
         self._searches = searches
         self.genre = genre
         self.releaseDate = releaseDate
         self.rating = rating
-        self.userRating = rating
+        self.userRating = userRating
 
     @property
     def name(self):

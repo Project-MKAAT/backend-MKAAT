@@ -32,8 +32,7 @@ class TrendingAPI:
                     anime.userRating.append({uid: rating})
                     anime.userRating = json.dumps(anime.userRating)
                     db.session.commit()
-
-
+                    return "Rating added successfully"
 
 api.add_resource(TrendingAPI._CRUD, "/")
 api.add_resource(TrendingAPI._UserRating, "/userRating")
