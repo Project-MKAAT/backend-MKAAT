@@ -14,15 +14,16 @@ from __init__ import app, db, cors  # Definitions initialization
 
 
 # setup APIs
+from api.trending import trending_api
 from api.user import user_api  # Blueprint import api definition
+
 from api.anime import anime_api
 
 # from api.player import player_api
 # database migrations
 from model.users import initUsers
-
+from model.trending import initTrending
 # from model.players import initPlayers
-from model.animes import initMessages
 
 # setup App pages
 from projects.projects import (
@@ -35,9 +36,10 @@ db.init_app(app)
 
 # register URIs
 app.register_blueprint(user_api)  # register api routes
-# app.register_blueprint(player_api)
+
 app.register_blueprint(anime_api)
-app.register_blueprint(app_projects)  # register app pages
+app.register_blueprint(trending_api)
+app.register_blueprint(app_projects) # register app pages
 
 
 @app.errorhandler(404)  # catch for URL not found
@@ -56,9 +58,7 @@ def table():
     return render_template("table.html")
 
 
-@app.route("/videos/<path:path>")
-def videos(path):
-    return send_from_directory("videos", path)
+
 
 
 @app.before_request
@@ -81,7 +81,7 @@ custom_cli = AppGroup("custom", help="Custom commands")
 @custom_cli.command("generate_data")
 def generate_data():
     initUsers()
-    initMessages()
+    initTrending()
 
 
 # Register the custom command group with the Flask application
