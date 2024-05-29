@@ -46,8 +46,8 @@ class AnimeAPI:
     class _CRUD(Resource):
         # POST http://127.0.0.1:8069/api/anime/
         # {"title": "anime title", "rating": "X"}
-        @token_required
-        def post(self, _):
+        # @token_required
+        def post(self):
             try:
                 body = request.get_json()
 
@@ -61,13 +61,12 @@ class AnimeAPI:
                     # find right show and add rating
                     # TODO #7
                     try:
-                        show = Anime.query.filter_by(
-                            _title=title
-                        ).first()  # query function
+                        shows = Anime.query.all()
+                        for show in shows:
+                            if show.title == title:
+                                show.update_rating(rating)
 
-                        show.update_rating(rating)
-
-                        return f"Added user rating {rating} for show {show.title}"
+                        return f"Added user rating {rating} for show {title}"
                     except Exception as e:
                         return {"error": "Something went wrong", "message": str(e)}, 500
             except Exception as e:
