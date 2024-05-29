@@ -28,6 +28,7 @@ def partition(arr, criteria, low, high):
 
 
 def quickSort(arr, criteria, low, high):
+def quickSort(arr, criteria, low, high):
     if low < high:
         pi = partition(arr, criteria, low, high)
         arr = quickSort(arr, criteria, low, pi - 1)
