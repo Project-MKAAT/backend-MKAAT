@@ -12,17 +12,26 @@ import re
 from api.anime import quickSort
 import ast
 import os
+from datetime import date
+
 
 class Trending(db.Model):
     __tablename__ = 'trendingAnime'
     
     _name = db.Column(db.String(255), unique=False, nullable = False)
     _searches = db.Column(db.Integer, primary_key=True)
+    _genre = db.Column(db.String(255), unique=False, nullable = False)
+    _releaseDate = db.Column(db.Date, unique=False, nullable = False)
+    _rating = db.Column(db.Float, unique=False, nullable = False)
+    _userRating = db.Column(db.Float, unique=False, nullable = False)
     
-    
-    def __init__(self, name="", searches=0):
+    def __init__(self, name="", searches=0, genre="", releaseDate=date.today(), rating=0, userRating=0):
         self._name = name
         self._searches = searches
+        self.genre = genre
+        self.releaseDate = releaseDate
+        self.rating = rating
+        self.userRating = rating
         
     @property
     def name(self):
@@ -38,7 +47,40 @@ class Trending(db.Model):
     @searches.setter
     def searches(self, searches):
         self._searches = searches
-    
+
+    @property
+    def genre(self):
+        return self._genre
+
+    @searches.setter
+    def genre(self, genre):
+        self._genre = genre
+
+    @property
+    def releaseDate(self):
+        return self._releaseDate
+
+    @releaseDate.setter
+    def releaseDate(self, releaseDate):
+        self._releaseDate = releaseDate
+
+    @property
+    def rating(self):
+        return self._rating
+
+    @rating.setter
+    def rating(self, rating):
+        self._rating = rating
+
+    @property
+    def userRating(self):
+        return self._userRating
+
+    @userRating.setter
+    def userRating(self, userRating):
+        self._userRating = userRating
+
+
     def __str__(self):
         return json.dumps(self.read())
     
