@@ -17,8 +17,8 @@ class Anime(db.Model):
     _title = db.Column(db.String(255), unique=False, nullable=False)
     _release = db.Column(db.DateTime, nullable=False, default=date.today())
     _genre = db.Column(db.String(255), unique=False, nullable=False)
-    _rating = db.Column(db.Integer, nullable=False, default=0)
-    _userRating = db.Column(db.Integer, nullable=False, default=0)
+    _rating = db.Column(db.Float, nullable=False, default=0)
+    _userRating = db.Column(db.String(255), nullable=False, default=0)
 
     # constructor of a Message object, initializes the instance variables within object (self)
     def __init__(self, title, release, genre, rating, userRating):
