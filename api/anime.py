@@ -11,28 +11,25 @@ anime_api = Blueprint("anime_api", __name__, url_prefix="/api/anime/")
 api = Api(anime_api)
 
 
+# this code works now
 def partition(arr, criteria, low, high):
-    pivot = arr[high]
+    pivot = arr[high][criteria]
     i = low - 1
 
     for j in range(low, high):
-        if arr[j][criteria] <= pivot[criteria]:
+        if arr[j][criteria] <= pivot:
             i = i + 1
-            (arr[i][criteria], arr[j][criteria]) = (arr[j][criteria], arr[i][criteria])
+            arr[i], arr[j] = arr[j], arr[i]
 
-    (arr[i + 1][criteria], arr[high][criteria]) = (
-        arr[high][criteria],
-        arr[i + 1][criteria],
-    )
+    arr[i + 1], arr[high] = arr[high], arr[i + 1]
     return i + 1
 
 
 def quickSort(arr, criteria, low, high):
-def quickSort(arr, criteria, low, high):
     if low < high:
         pi = partition(arr, criteria, low, high)
-        arr = quickSort(arr, criteria, low, pi - 1)
-        arr = quickSort(arr, criteria, pi + 1, high)
+        quickSort(arr, criteria, low, pi - 1)
+        quickSort(arr, criteria, pi + 1, high)
     return arr
 
 
@@ -58,8 +55,7 @@ class AnimeAPI:
             except Exception as e:
                 return {"rating": f"Failed to create rating: {str(e)}"}, 500
 
-        @token_required
-        def get(self, _):  # Read Method
+        def get(self):  # Read Method
             messages = Anime.query.all()
             json_ready = [message.read() for message in messages]
             return jsonify(json_ready)
@@ -68,24 +64,28 @@ class AnimeAPI:
             Anime.update(old_message, new_message, likes)
 
     class _GetSorted(Resource):
-        @token_required
-        def post(self, current_user):
-            body = request.get_json()  # get request
-
-            # get critera
+        def post(self):
+            body = request.get_json()
             criteria = body.get("criteria")
-            isReversed = eval(body.get("isReversed"))
+            is_reversed = body.get("isReversed", False)
 
-            messages = Anime.query.all()
-            json_ready = [message.read() for message in messages]
+            if criteria not in ["title", "release", "genre", "rating", "userRating"]:
+                return jsonify({"message": "Invalid sorting criteria"}), 400
 
-            # sort by critera
-            json_ready = quickSort(json_ready, criteria, 0, len(json_ready) - 1)
+            # Retrieve all anime entries from the database
+            animes = Anime.query.all()
 
-            if isReversed:
-                json_ready.reverse()
+            # Convert anime entries to dictionaries
+            json_ready = [anime.read() for anime in animes]
 
-            return jsonify(json_ready)   
+            # Sort the anime entries based on the specified criteria
+            sorted_animes = sorted(json_ready, key=lambda x: x[criteria])
+
+            # Reverse the list if specified
+            if is_reversed:
+                sorted_animes.reverse()
+
+            return jsonify(sorted_animes)
 
 
 api.add_resource(AnimeAPI._CRUD, "/")

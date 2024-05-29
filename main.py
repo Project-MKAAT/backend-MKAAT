@@ -83,6 +83,7 @@ def generate_data():
     initUsers()
     initTrending()
 
+
 # Register the custom command group with the Flask application
 app.cli.add_command(custom_cli)
 
