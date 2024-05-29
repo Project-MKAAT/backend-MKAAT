@@ -67,7 +67,7 @@ class TrendingAPI:
             criteria = body.get("criteria")
             is_reversed = body.get("isReversed")
 
-            if criteria not in ["title", "release", "genre", "rating", "userRating"]:
+            if criteria not in ["title", "release", "genre", "rating", "userRating", "popularity"]:
                 return jsonify({"message": "Invalid sorting criteria"}), 400
 
             # Retrieve all anime entries from the database
