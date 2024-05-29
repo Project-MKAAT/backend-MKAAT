@@ -9,7 +9,6 @@ from flask import jsonify
 from __init__ import app, db
 from sqlalchemy.exc import IntegrityError
 import re
-from api.anime import quickSort
 import ast
 import os
 from datetime import date

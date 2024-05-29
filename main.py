@@ -17,7 +17,6 @@ from __init__ import app, db, cors  # Definitions initialization
 from api.trending import trending_api
 from api.user import user_api  # Blueprint import api definition
 
-from api.anime import anime_api
 
 # from api.player import player_api
 # database migrations
@@ -37,7 +36,6 @@ db.init_app(app)
 # register URIs
 app.register_blueprint(user_api)  # register api routes
 
-app.register_blueprint(anime_api)
 app.register_blueprint(trending_api)
 app.register_blueprint(app_projects) # register app pages
 
