@@ -17,14 +17,14 @@ from datetime import date
 
 class Trending(db.Model):
     __tablename__ = 'trendingAnime'
-    
+
     _name = db.Column(db.String(255), unique=False, nullable = False)
     _searches = db.Column(db.Integer, primary_key=True)
     _genre = db.Column(db.String(255), unique=False, nullable = False)
     _releaseDate = db.Column(db.Date, unique=False, nullable = False)
     _rating = db.Column(db.Float, unique=False, nullable = False)
     _userRating = db.Column(db.String(20), default=json.dumps([]), unique=False, nullable = False)
-    
+
     def __init__(self, name="", searches=0, genre="", releaseDate=date.today(), rating=0, userRating=0):
         self._name = name
         self._searches = searches
@@ -32,14 +32,14 @@ class Trending(db.Model):
         self.releaseDate = releaseDate
         self.rating = rating
         self.userRating = rating
-        
+
     @property
     def name(self):
         return self._name
     @name.setter
     def name(self, name):
         self._name = name
-    
+
     @property
     def searches(self):
         return self._searches
@@ -80,10 +80,9 @@ class Trending(db.Model):
     def userRating(self, userRating):
         self._userRating = userRating
 
-
     def __str__(self):
         return json.dumps(self.read())
-    
+
     def create(self):
         try:
             db.session.add(self)
@@ -94,8 +93,12 @@ class Trending(db.Model):
             return None
     def read(self):
         return {
-            "name": self.name,
-            "searches": self.searches
+            "title": self.name,
+            "popularity": self.searches,
+            "genre": self.genre,
+            "release": self.releaseDate,
+            "rating": self.rating,
+            "userRating": self.userRating,
         }
 def fetchAnimeTitles():
     animeTitles = []
@@ -168,7 +171,7 @@ def getSearches():
         except Exception as e:
             print(f"diff error lol: {e}")
             time.sleep(15)
-            
+
 def initTrending():
     with app.app_context():
         # fetchAnimeTitles()
