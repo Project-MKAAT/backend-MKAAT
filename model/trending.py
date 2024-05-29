@@ -104,17 +104,32 @@ class Trending(db.Model):
             return None
 
     def read(self):
+        # extract the user rating (remove the username)
+        # take the average (make sure to check division by 0 tho)
+        # return avg
         user_ratings = json.loads(self.userRating)
         ratings = [list(rating.values())[0] for rating in user_ratings]
 
-        return {
-            "title": self.name,
-            "popularity": self.searches,
-            "genre": self.genre,
-            "release": self.releaseDate,
-            "rating": self.rating,
-            "userRating": ratings,
-        }
+        if len(ratings) != 0:
+            average_rating = sum(ratings) / len(ratings)
+            print(average_rating)
+            return {
+                "title": self.name,
+                "popularity": self.searches,
+                "genre": self.genre,
+                "release": self.releaseDate,
+                "rating": self.rating,
+                "userRating": average_rating,
+            }
+        else:
+            return {
+                "title": self.name,
+                "popularity": self.searches,
+                "genre": self.genre,
+                "release": self.releaseDate,
+                "rating": self.rating,
+                "userRating": ratings,
+            }
 
 
 def fetchAnimeTitles():
