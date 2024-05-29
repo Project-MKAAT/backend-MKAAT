@@ -12,6 +12,7 @@ import re
 import ast
 import os
 from datetime import date
+from datetime import datetime
 
 
 class Trending(db.Model):
@@ -101,8 +102,7 @@ class Trending(db.Model):
         except IntegrityError:
             db.session.remove()
             return None
-
-    
+        
     def read(self):
         # Parse the userRating JSON string and extract the rating values
         user_ratings = json.loads(self._userRating)
@@ -143,10 +143,84 @@ def fetchAnimeTitles():
         for i in animeTags:
             animeTitles.append(i)
         animeTitles = [item for item in animeTitles if "More" not in item]
-    with open("animeTitles.txt", "a") as file:
-        file.write(str(animeTitles))
+
+        animes = animeTitles
+        with open("animeTitles.txt", "a") as file:
+            file.write(str(animeTitles))
+
+def genreFetch(animeTitles):
+    # File to store titles that need manual entries
+    manual_entries_file = 'manualEntries.txt'
+
+    # Dictionary to store the results
+    animeData = []
+
+    with open(manual_entries_file, 'a') as manual_file:
+        for anime in animeTitles:
+            try:
+                title = anime.replace(' ', '_')
+                # URL of the Wikipedia page
+                url = f'https://en.wikipedia.org/wiki/{title}'
+
+                # Send a GET request to the URL
+                response = requests.get(url)
+                
+                # Check if the page exists
+                if response.status_code == 404:
+                    raise ValueError("Wikipedia page does not exist")
+
+                html_content = response.text
+
+                # Parse the HTML content using BeautifulSoup
+                soup = BeautifulSoup(html_content, 'html.parser')
+                
+                # Find the infobox
+                infobox = soup.find('table', {'class': 'infobox'})
+
+                # Handle cases where infobox is not found
+                if infobox is None:
+                    raise ValueError("Infobox not found")
+
+                # Find the genre row and release date row
+                genreRow = infobox.find('th', string='Genre')
+                releaseDateRow = infobox.find('th', string='Original run')
+
+                # Handle cases where genre or release date rows are not found
+                if genreRow is None or releaseDateRow is None:
+                    raise ValueError("Genre or release date row not found")
+
+                # Get the genre information
+                genre = genreRow.find_next_sibling('td').get_text().strip()
+                cleanedGenre = re.sub(r'\[\d+\]', ', ', genre)
+                # Remove the trailing comma and space at the end
+                cleanedGenre = cleanedGenre.rstrip(', ')
+
+                # Get the release date information
+                releaseDate = releaseDateRow.find_next_sibling('td').get_text().strip()
+                releaseDate = releaseDate.split('–')[0].strip()
+                releaseDate = datetime.strptime(releaseDate, '%B %d, %Y')
+
+                # Store the results in the dictionary
+                animeData.append({
+                    'name': anime,
+                    'genre': cleanedGenre,
+                    'release_date': releaseDate
+                })
+
+                # Print the results
+                print(f"{anime}: Genre: {cleanedGenre}")
+                print(f"{anime}: Release Date: {releaseDate}")
+
+            except Exception as e:
+                # Write the title to the manual entries file if there's an error
+                with open(manual_entries_file, 'a') as manual_file:
+                    manual_file.write(f"{anime}\n")
+                print(f"Error processing {anime}: {e}")
+
+    return animeData
 
 
+        
 def getSearches():
     animeRelevancy = []
     with open("animeTitles.txt", "r") as file:
@@ -219,22 +293,39 @@ def initTrending():
         names = []
         searche = []
         relevancy = []
+        genres = []
+        releaseDates = []
         with open("animes.txt", "r") as file:
             stringAnime = file.readlines()[0]
+            print("Animes: ",stringAnime)
             stringAnime = re.sub(r"}{", "},{", stringAnime)
             stringAnime = "[" + stringAnime + "]"
             animeList = ast.literal_eval(stringAnime)
+            # print(animeList)
+            # genreFetch([entry["name"] for entry in animeList])
+            # data = [entry for entry in animeList if entry["searches"] is not None]
 
-            print(animeList)
-            data = [entry for entry in animeList if entry["searches"] is not None]
-
-            sorted_data = sorted(data, key=lambda x: x["searches"])
-        for entry in sorted_data:
+            # sorted_data = sorted(data, key=lambda x: x["searches"])
+        for entry in animeList:
             names.append(entry["name"])
             searche.append(entry["searches"])
+        stuff = genreFetch(names)
+        print("cool genre stuff: ",stuff)
+        for genre in stuff:
+            genres.append(genre['genre'])
+            releaseDates.append(genre['release_date'])
 
         for i in range(len(names)):
-            temp = Trending(name=names[i], searches=searche[i])
-            relevancy.append(temp)
+            if i < len(genres) and i < len(releaseDates):
+                temp = Trending(name=names[i], searches=searche[i], genre=genres[i], releaseDate=releaseDates[i])
+                relevancy.append(temp)
+            else:
+                temp = Trending(name=names[i], searches=searche[i])
+                relevancy.append(temp)
         for i in relevancy:
             i.create()
+    print(len(names))
+    print(len(searche))
+    print(len(genres))
+    print(len(releaseDates))
+    print(len(relevancy))
