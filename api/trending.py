@@ -51,7 +51,6 @@ class TrendingAPI:
             for anime in animes:
                 if anime.name == name:
                     anime.userRating = json.loads(anime.userRating)
-                    print(type(anime.userRating))
                     for user_rating in anime.userRating:
                         if uid in user_rating:
                             return {"message": "You have already rated this show."}, 400
@@ -76,33 +75,11 @@ class TrendingAPI:
             # Convert anime entries to dictionaries
             json_ready = [anime.read() for anime in animes]
 
-            # Sort the anime entries based on the specified criteria
-
-        #     user_ratings = json.loads(self.userRating)
-        # ratings = [list(rating.values())[0] for rating in user_ratings]
-
-        # if len(ratings) != 0:
-        #     average_rating = sum(ratings) / len(ratings)
-        #     print(average_rating)
-        #     return {
-        #         "title": self.name,
-        #         "popularity": self.searches,
-        #         "genre": self.genre,
-        #         "release": self.releaseDate,
-        #         "rating": self.rating,
-        #         "userRating": average_rating,
-        #     }
-        # else:
-        #     return {
-        #         "title": self.name,
-        #         "popularity": self.searches,
-        #         "genre": self.genre,
-        #         "release": self.releaseDate,
-        #         "rating": self.rating,
-        #         "userRating": ratings,
-        #     }
-
-            sorted_animes = sorted(json_ready, key=lambda x: x[criteria])
+            # Ensure that userRating is a float
+            if criteria == "userRating":
+                sorted_animes = sorted(json_ready, key=lambda x: float(x[criteria]))
+            else:
+                sorted_animes = sorted(json_ready, key=lambda x: x[criteria])
 
             # Reverse the list if specified
             if is_reversed:
