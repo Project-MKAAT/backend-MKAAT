@@ -11,6 +11,7 @@ trending_api = Blueprint("trending_api", __name__, url_prefix="/api/trending/")
 
 api = Api(trending_api)
 
+
 # quicksort code
 def partition(arr, criteria, low, high):
     pivot = arr[high][criteria]
@@ -64,7 +65,7 @@ class TrendingAPI:
         def post(self):
             body = request.get_json()
             criteria = body.get("criteria")
-            is_reversed = body.get("isReversed", False)
+            is_reversed = body.get("isReversed")
 
             if criteria not in ["title", "release", "genre", "rating", "userRating"]:
                 return jsonify({"message": "Invalid sorting criteria"}), 400
@@ -82,7 +83,7 @@ class TrendingAPI:
                 sorted_animes = sorted(json_ready, key=lambda x: x[criteria])
 
             # Reverse the list if specified
-            if is_reversed:
+            if is_reversed is True:
                 sorted_animes.reverse()
 
             return jsonify(sorted_animes)
