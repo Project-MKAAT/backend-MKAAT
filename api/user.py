@@ -26,27 +26,27 @@ class UserAPI:
                 return {
                     "message": f"Name is missing, or is less than 2 characters"
                 }, 400
-            
+
             # validate uid
             uid = body.get("uid")
             if uid is None or len(uid) < 2:
                 return {
                     "message": f"User ID is missing, or is less than 2 characters"
                 }, 400
-            
+
             # email and password
             email = body.get("email")
             if email is None or "@" not in email:
                 return {"message": f"Email is missing or in the wrong format"}, 400
             password = body.get("password")
-            
+
             # 1: Key code block, setup USER OBJECT
             uo = User(name=name, uid=uid, email=email)
 
             # set password if provided
             if password is not None:
                 uo.set_password(password)
-        
+
             # 2: Key Code block to add user to database
             # create user in database
             user = uo.create()
